@@ -15,11 +15,10 @@ namespace WebApplication1.Data
         public DbSet<PokemonCategory> PokemonCategories { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Reviewer> Reviewers { get; set; }
-        public DbSet<Move> Moves { get; set; }  // ✅ Move tablosu
+        public DbSet<Move> Moves { get; set; }  
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Pokémon <-> Category (many-to-many)
             modelBuilder.Entity<PokemonCategory>()
                 .HasKey(pc => new { pc.PokemonId, pc.CategoryId });
 
@@ -33,7 +32,6 @@ namespace WebApplication1.Data
                 .WithMany(pc => pc.PokemonCategories)
                 .HasForeignKey(c => c.CategoryId);
 
-            // Pokémon <-> Owner (many-to-many)
             modelBuilder.Entity<PokemonOwner>()
                 .HasKey(po => new { po.PokemonId, po.OwnerId });
 
@@ -47,7 +45,6 @@ namespace WebApplication1.Data
                 .WithMany(pc => pc.PokemonOwners)
                 .HasForeignKey(c => c.OwnerId);
 
-            // ✅ Pokémon <-> Move (one-to-many)
             modelBuilder.Entity<Move>()
                 .HasOne(m => m.Pokemon)
                 .WithMany(p => p.Moves)
